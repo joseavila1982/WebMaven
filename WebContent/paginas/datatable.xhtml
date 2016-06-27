@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+
+	<h:form id="form">
+    <p:growl id="msgs" showDetail="true" />
+    
+	 <p:dataTable id="checkboxDT" var="car" value="#{dtTableBean.cars}" paginator="true" rows="10"
+	     selection="#{dtTableBean.selectedCars}" rowKey="#{car.id}" style="margin-bottom:0;margin-bottom:20px">
+        <f:facet name="header">
+            DataTable de Cars
+        </f:facet>
+        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>    		
+        <p:column headerText="Id">
+            <h:outputText value="#{car.id}" />
+        </p:column>
+        <p:column headerText="Año">
+            <h:outputText value="#{car.ano}" />
+        </p:column>
+        <p:column headerText="Marca">
+            <h:outputText value="#{car.marca}" />
+        </p:column>
+        <p:column headerText="Color">
+            <h:outputText value="#{car.color}" />
+        </p:column>
+        <f:facet name="footer">
+            <p:commandButton process="checkboxDT" update=":form:multiCarDetail" icon="ui-icon-search" value="Ver" oncomplete="PF('multiCarDialog').show()" />
+        </f:facet>
+    </p:dataTable>
+ 
+    <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="carDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty dtTableBean.selectedCar}" columnClasses="label,value">
+                <f:facet name="header">
+                    <p:graphicImage name="demo/images/car/#{dtTableBean.selectedCar.marca}-big.gif"/> 
+                </f:facet>
+ 
+                <h:outputText value="Id:" />
+                <h:outputText value="#{dtSelectionView.selectedCar.id}" />
+ 
+                <h:outputText value="Año" />
+                <h:outputText value="#{dtSelectionView.selectedCar.ano}" />
+ 
+                <h:outputText value="Color:" />
+                <h:outputText value="#{dtTableBean.selectedCar.color}" style="color:#{dtTableBean.selectedCar.color}"/>
+ 
+                <h:outputText value="marca" />
+                <h:outputText value="$#{dtTableBean.selectedCar.marca}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+ 
+    <p:dialog header="Selecionados Cars" widgetVar="multiCarDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="200">
+        <p:outputPanel id="multiCarDetail" style="text-align:center;">
+            <ui:repeat value="#{dtTableBean.selectedCars}" var="car">
+                <h:outputText value="#{car.id} - #{car.marca}" style="display:block"/>
+            </ui:repeat>
+        </p:outputPanel>
+    </p:dialog>
+	</h:form>
+
+</h:body>
+</html>
+

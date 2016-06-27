@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+
+	<h:form id="menu">
+		<p:growl id="messages" />
+		<p:menubar>
+			<p:submenu label="Inicio" icon="ui-icon-document">
+				<p:submenu label="Nuevo" icon="ui-icon-contact">
+					<p:menuitem value="Mantener Areas" url="/paginas/areas.xhtml" />
+					<p:menuitem value="Perfiles-Usuarios"
+						url="/paginas/perfilesUsuarios.xhtml" />
+					<p:menuitem value="Usuario" url="/paginas/usuario.xhtml" />
+				</p:submenu>
+				<p:separator />
+				<p:menuitem value="Regresar" url="../" />
+			</p:submenu>
+			<p:menuitem value="Principal" url="../" icon="ui-icon-close" />
+		</p:menubar>
+	</h:form>
+
+
+	<p:fieldset style="margin-bottom:20px">
+		<h:form id="areaform">
+			<b>Mantener Areas</b>
+			<h:panelGrid id="panel" columns="3" cellpadding="5">
+				<h:column>
+				       <p:outputLabel value="Nombre: " />
+			    </h:column>
+				<h:column>
+				      <p:inputText id="nombre" value="#{areaBean.nombre}" required="true" requiredMessage="Debe introducir un valor en el campo Nombre" />
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<p:outputLabel value="Nombre Jefe: " />
+				</h:column>
+				<h:column>
+					<p:selectOneMenu id="namjefe" value="#{areaBean.nombreJefe}" required="true" requiredMessage="Debe seleccionar un valor en el campo Nombre Jefe"
+					                 style="width:125px">
+						<f:selectItem itemLabel="Seleccione un item ..." itemValue="" />
+						<f:selectItem itemLabel="Jose Bello" itemValue="2" />
+						<f:selectItem itemLabel="rodo Bolson" itemValue="9" />
+						<f:selectItem itemLabel="Rene Iguita" itemValue="13" />
+						<f:selectItem itemLabel="Jorge Middleton" itemValue="6" />
+					</p:selectOneMenu>
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<p:outputLabel value="Area Superior: " />
+				</h:column>
+				<h:column>
+					<p:selectOneMenu id="areaSup" value="#{areaBean.areaSuperior}" required="true" requiredMessage="Debe seleccionar un valor en el campo Area Superior" 
+					                 style="width:140px">
+						<f:selectItem itemLabel="Seleccionar" itemValue="" />
+						<f:selectItem itemLabel="Economia" itemValue="2" />
+						<f:selectItem itemLabel="Subastas" itemValue="9" />
+						<f:selectItem itemLabel="Aseo" itemValue="13" />
+						<f:selectItem itemLabel="Reclamos" itemValue="6" />
+					</p:selectOneMenu>
+				</h:column>
+				<h:column>
+					<p:commandButton icon="ui-icon-search" value="Buscar" />
+				</h:column>
+
+				<h:column>
+					<h:outputText value="Activo " />
+				</h:column>
+				<h:column>
+					<p:selectBooleanCheckbox value="true" />
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<p:commandButton value="Consultar" update="panel"
+						actionListener="#{areaBean.save}" />
+				</h:column>
+				<h:column>
+					<p:commandButton value="Limpiar" update="panel" process="@this"
+						actionListener="#{areaBean.resetFail}" style="margin-right:20px;" />
+				</h:column>
+				<h:column></h:column>
+				
+				<h:column></h:column>
+				<h:column></h:column>
+				<h:column>
+					<p:messages id="msgs" />
+				</h:column>
+
+			</h:panelGrid>
+
+		</h:form>
+	</p:fieldset>
+
+	<p:fieldset style="margin-bottom:20px">
+	   <b>Resultados de la Consulta</b>
+	   <br></br>
+	   <br></br>
+	   
+		<h:form id="resultado">
+			<p:dataTable id="tbl" var="car" value="#{dtTableBean.cars}"  widgetVar="carsTable"
+			    emptyMessage="No existe carros de la marca seleccionada"
+				paginator="true" rows="10">
+
+				<p:column filterBy="#{car.id}" headerText="Id" footerText="contains" filterMatchMode="contains">
+					<h:outputText value="#{car.id}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="año" />
+					</f:facet>
+					<h:outputText value="#{car.ano}" />
+				</p:column>
+
+        <p:column filterBy="#{car.marca}" headerText="Marca" footerText="exact" filterMatchMode="exact">
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('carsTable').filter()" >
+                    <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                    <f:selectItems value="#{dtTableBean.brands}" />
+                </p:selectOneMenu>
+            </f:facet>
+            <h:outputText value="#{car.marca}" />
+        </p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Color" />
+					</f:facet>
+					<h:outputText value="#{car.color}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</p:fieldset>
+
+</h:body>
+</html>
+

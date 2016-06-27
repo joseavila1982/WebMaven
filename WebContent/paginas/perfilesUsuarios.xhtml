@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+
+	<h:form>
+		<p:growl id="messages" />
+		<p:menubar>
+			<p:submenu label="Inicio" icon="ui-icon-document">
+				<p:submenu label="Nuevo" icon="ui-icon-contact">
+					<p:menuitem value="Mantener Areas" url="/paginas/areas.xhtml" />
+					<p:menuitem value="Perfiles-Usuarios"
+						url="/paginas/perfilesUsuarios.xhtml" />
+					<p:menuitem value="Usuario" url="/paginas/usuario.xhtml" />
+				</p:submenu>
+				<p:separator />
+				<p:menuitem value="Regresar" url="../" />
+			</p:submenu>
+			<p:menuitem value="Principal" url="../" icon="ui-icon-close" />
+		</p:menubar>
+	</h:form>
+
+<p:fieldset legend="Mantenimiento Perfiles-Usuarios" style="margin-bottom:20px">
+ <p:growl id="msgs" showDetail="true" />
+		
+  <h:form id="form1">
+	 <h:panelGrid id="panel" header="Form" columns="3" cellpadding="5">
+
+		<h:column>
+			<p:outputLabel value="Nombre: " />
+		</h:column>
+		<h:column>
+			<p:inputText id="nombre" value="" />
+		</h:column>
+		<h:column></h:column>
+
+		<h:column>
+			<p:outputLabel value="Login: " />
+		</h:column>
+		<h:column>
+			<p:inputText id="login" value="" /> 
+		</h:column>
+		<h:column></h:column>
+	   
+		<h:column></h:column>
+		<h:column></h:column>
+		<h:column>
+
+			<p:pickList id="pickList" value="#{pickListBean.perfiles}"
+				var="perfiles" itemLabel="#{perfiles}" itemValue="#{perfiles}">
+
+				<f:facet name="sourceCaption">Perfiles Disponibles</f:facet>
+				<f:facet name="targetCaption">Perfiles Asignados</f:facet>
+
+			</p:pickList>
+
+			<p:commandButton id="Submit" value="Guardar"
+				update="displayPerfiles" oncomplete="PF('perfilDialog').show()"
+				style="margin-top:5px" />
+
+
+			<p:dialog modal="true" showEffect="fade" hideEffect="fade"
+				widgetVar="perfilDialog">
+				<h:panelGrid id="displayPerfiles" columns="2">
+					<h:outputText value="Source: " style="font-weight:bold" />
+					<ui:repeat value="#{pickListBean.perfiles.source}" var="item">
+						<h:outputText value="#{item}" style="margin-right:5px" />
+					</ui:repeat>
+
+					<h:outputText value="Target: " style="font-weight:bold" />
+					<ui:repeat value="#{pickListBean.perfiles.target}" var="item">
+						<h:outputText value="#{item}" style="margin-right:5px" />
+					</ui:repeat>
+				</h:panelGrid>
+			</p:dialog>
+		</h:column>
+
+
+
+
+
+			</h:panelGrid>	
+  </h:form>
+ 
+
+
+</p:fieldset>
+
+</h:body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+
+<p:fieldset legend="Prueba de Pop-Ups" style="margin-bottom:20px">
+	<h:form>
+		<p:growl id="message" showDetail="true" />
+
+		<p:fieldset style="margin-bottom:20px">
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:commandButton value="Abrir Popup"
+					actionListener="#{dialogView.destroyWorld}" update="message">
+					<p:confirm header="Confirmacion" message="Estas Seguro?"
+						icon="ui-icon-alert" />
+				</p:commandButton>
+
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Yes" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="No" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+				
+			<p:commandButton value="Modal" type="button" onclick="PF('dlg2').show();" />
+			
+			<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
+				height="100">
+				<h:outputText value="This is a Modal Dialog." />
+			</p:dialog>
+			
+			</h:panelGrid>
+
+
+
+			</p:fieldset>
+
+
+	</h:form>
+</p:fieldset>
+
+</h:body>
+</html>

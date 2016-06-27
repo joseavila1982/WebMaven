@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+        <link rel="stylesheet" href="../css/estilos.css" />  
+        
+</h:head>
+<h:body>
+
+	<div id="loading">
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true"
+			header="Espera por favor..." draggable="false" closable="false"
+			resizable="false">
+			<p:graphicImage value="/imagen/ajax-loader.gif" />
+		</p:dialog>
+	</div>
+
+	<h:form>
+		<p:growl id="messages" />
+		<p:menubar>
+			<p:submenu label="Inicio" icon="ui-icon-document">
+				<p:submenu label="Nuevo" icon="ui-icon-contact">
+					<p:menuitem value="Mantener Areas" url="/paginas/areas.xhtml" />
+					<p:menuitem value="Perfiles-Usuarios"
+						url="/paginas/perfilesUsuarios.xhtml" />
+					<p:menuitem value="Usuario" url="/paginas/usuario.xhtml" />
+				</p:submenu>
+				<p:separator />
+				<p:menuitem value="Regresar" url="../" />
+			</p:submenu>
+			<p:menuitem value="Principal" url="../" icon="ui-icon-close" />
+		</p:menubar>
+	</h:form>
+	
+	<p:fieldset style="margin-bottom:20px">
+		<h:form id="formUsuario">
+			<b>Usuario</b>
+			<h:panelGrid id="panel" columns="3" cellpadding="5">
+				<h:column>
+					<p:outputLabel value="Nombre: " />
+				</h:column>
+				<h:column>
+                    <p:inputText id="nombre" value="#{usuarioBean.nombre}" required="true" requiredMessage="Debe introducir un valor en el campo Nombre" />
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<p:outputLabel value="Login: " />
+				</h:column>
+				<h:column>
+					<p:inputText id="login" value="#{usuarioBean.login}" required="true" requiredMessage="Debe introducir un valor en el campo Login" />
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<p:outputLabel value="Area: " />
+				</h:column>
+				<h:column>
+					<p:selectOneMenu id="area" value="#{usuarioBean.area}" required="true" requiredMessage="Debe seleccionar un valor en el campo Area" style="width:125px">
+						<f:selectItem itemLabel="Seleccione un item ..." itemValue="" />
+						<f:selectItem itemLabel="Finanzas" itemValue="Finanzas" />
+						<f:selectItem itemLabel="Area 51" itemValue="Area 51" />
+						<f:selectItem itemLabel="Economia" itemValue="Economia" />
+						<f:selectItem itemLabel="Aduana" itemValue="Aduana" />
+						<f:selectItem itemLabel="Informatica" itemValue="Informatica" />
+						<f:selectItem itemLabel="Servicios" itemValue="Servicios" />
+					</p:selectOneMenu>
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<p:outputLabel value="Usuario Alterno: " />
+				</h:column>
+				<h:column>
+					<p:selectOneMenu id="usualterno" value="#{usuarioBean.usualterno}"  required="true" requiredMessage="Debe seleccionar un valor en el campo Usuario Alterno" style="width:125px">
+						<f:selectItem itemLabel="Seleccione un item ..." itemValue="" />
+						<f:selectItem itemLabel="Jose Bello" itemValue="2" />
+						<f:selectItem itemLabel="rodo Bolson" itemValue="9" />
+						<f:selectItem itemLabel="Rene Iguita" itemValue="13" />
+						<f:selectItem itemLabel="Jorge Middleton" itemValue="6" />
+					</p:selectOneMenu>
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<h:outputText value="Activo " />
+				</h:column>
+				<h:column>
+					 <p:selectOneMenu id="activo" value="#{usuarioBean.activo}" style="width:125px">
+						<f:selectItem itemLabel="Activo" itemValue="0" />
+						<f:selectItem itemLabel="Inactivo" itemValue="1" />
+					</p:selectOneMenu>
+				</h:column>
+				<h:column></h:column>
+
+				<h:column>
+					<p:commandButton value="Guardar" update="panel"
+						actionListener="#{usuarioBean.save}" icon="ui-icon-check" />
+				</h:column>
+				<h:column>
+					<p:commandButton value="Limpiar" update="panel" process="@this"
+						actionListener="#{usuarioBean.resetFail}" style="margin-right:20px;" />
+
+				</h:column>
+				<h:column></h:column>
+
+				<h:column></h:column>
+				<h:column></h:column>
+				<h:column>
+					<p:messages id="msgs" />
+				</h:column>
+
+			</h:panelGrid>
+
+		</h:form>
+	</p:fieldset>
+
+	<p:fieldset style="margin-bottom:20px">
+	   <b>Resultados de la Consulta</b>
+	   <br></br>
+	   <br></br>
+	   
+		<h:form id="resultado">
+
+			 <p:growl id="messages" showDetail="true" />
+    
+			<p:dataTable id="tbl" var="usu" value="#{usuarioBean.usuarios}" paginator="true" rows="10" >
+
+				<p:column headerText="Num">
+					<h:outputText value="#{usu.num}" />
+				</p:column>
+				
+				<p:column headerText="Nombre">
+					<h:outputText value="#{usu.nombre}" />
+				</p:column>
+
+				<p:column headerText="Login">
+					<h:outputText value="#{usu.login}" />
+				</p:column>
+
+		        <p:column headerText="Area">
+		            <h:outputText value="#{usu.area}" />
+		        </p:column>
+
+				<p:column headerText="Usuario Alterno">
+					<h:outputText value="#{usu.usuarioAlterno}" />
+				</p:column>
+
+				<p:column>
+					<p:commandButton oncomplete="PF('carDialog').show()" update=":resultado:panelactu"
+					      title="Editar" image="icon-edit">
+						<f:setPropertyActionListener value="#{usu}"
+							target="#{usuarioBean.selectedUsuario}" />
+					</p:commandButton>
+					
+					<p:commandButton  title="Eliminar" image="icon-delete" >
+						<f:param name="num" value="#{usu.num}" />
+					</p:commandButton>
+               </p:column>
+
+
+
+
+			</p:dataTable>
+
+			<p:dialog header="Actualizar" widgetVar="carDialog" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false">
+
+				<h:panelGrid id="panelactu" columns="2" cellpadding="5">
+					<h:column>
+						<p:outputLabel value="Num: " />
+					</h:column>
+					<h:column>
+						<p:inputText id="num" value="#{usuarioBean.selectedUsuario.num}"
+							required="true" label="num" />
+					</h:column>
+					<h:column>
+						<p:outputLabel value="Nombre: " />
+					</h:column>
+					<h:column>
+						<p:inputText id="nombre"
+							value="#{usuarioBean.selectedUsuario.nombre}" required="true"
+							label="nombre" />
+					</h:column>
+					<h:column>
+						<p:outputLabel value="Login: " />
+					</h:column>
+					<h:column>
+						<p:inputText id="login"
+							value="#{usuarioBean.selectedUsuario.login}" required="true"
+							label="login" />
+					</h:column>
+					<h:column>
+						<p:outputLabel value="Area: " />
+					</h:column>
+					<h:column>
+						<p:inputText id="area" value="#{usuarioBean.selectedUsuario.area}"
+							required="true" label="area" />
+					</h:column>
+					<h:column>
+						<p:outputLabel value="Usuario Alterno: " />
+					</h:column>
+					<h:column>
+						<p:inputText id="usuarioalterno"
+							value="#{usuarioBean.selectedUsuario.usuarioAlterno}"
+							required="true" label="usuarioalterno" />
+					</h:column>
+					<p:commandButton value="Actualizar" title="Actualizar" />
+
+
+				</h:panelGrid>
+			</p:dialog>
+
+		</h:form>
+
+	</p:fieldset>
+
+
+
+</h:body>
+</html>
+
