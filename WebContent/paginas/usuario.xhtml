@@ -65,14 +65,11 @@
 					<p:outputLabel value="Area: " />
 				</h:column>
 				<h:column>
-					<p:selectOneMenu id="area" value="#{usuarioBean.area}" required="true" requiredMessage="Debe seleccionar un valor en el campo Area" style="width:125px">
-						<f:selectItem itemLabel="Seleccione un item ..." itemValue="" />
-						<f:selectItem itemLabel="Finanzas" itemValue="Finanzas" />
-						<f:selectItem itemLabel="Area 51" itemValue="Area 51" />
-						<f:selectItem itemLabel="Economia" itemValue="Economia" />
-						<f:selectItem itemLabel="Aduana" itemValue="Aduana" />
-						<f:selectItem itemLabel="Informatica" itemValue="Informatica" />
-						<f:selectItem itemLabel="Servicios" itemValue="Servicios" />
+					<p:selectOneMenu id="area" value="#{usuarioBean.area}" required="true" requiredMessage="Debe seleccionar un valor en el campo Area"
+						style="width:125px">
+						<f:selectItem itemLabel="Seleccione un item ..." itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{usuarioBean.areas}" />
 					</p:selectOneMenu>
 				</h:column>
 				<h:column></h:column>
@@ -80,13 +77,11 @@
 				<h:column>
 					<p:outputLabel value="Usuario Alterno: " />
 				</h:column>
-				<h:column>
-					<p:selectOneMenu id="usualterno" value="#{usuarioBean.usualterno}"  required="true" requiredMessage="Debe seleccionar un valor en el campo Usuario Alterno" style="width:125px">
-						<f:selectItem itemLabel="Seleccione un item ..." itemValue="" />
-						<f:selectItem itemLabel="Jose Bello" itemValue="2" />
-						<f:selectItem itemLabel="rodo Bolson" itemValue="9" />
-						<f:selectItem itemLabel="Rene Iguita" itemValue="13" />
-						<f:selectItem itemLabel="Jorge Middleton" itemValue="6" />
+				<h:column>	
+				    <p:selectOneMenu id="usualterno" value="#{usuarioBean.usualterno}" required="true" requiredMessage="Debe seleccionar un valor en el campo Usuario Alterno" style="width:125px" >
+						<f:selectItem itemLabel="Seleccione un item ..." itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{usuarioBean.usuariosAlternos}" />
 					</p:selectOneMenu>
 				</h:column>
 				<h:column></h:column>
@@ -104,7 +99,7 @@
 
 				<h:column>
 					<p:commandButton value="Guardar" update="panel"
-						actionListener="#{usuarioBean.save}" icon="ui-icon-check" />
+						actionListener="#{usuarioBean.save}"  />
 				</h:column>
 				<h:column>
 					<p:commandButton value="Limpiar" update="panel" process="@this"
@@ -130,91 +125,89 @@
 	   <br></br>
 	   
 		<h:form id="resultado">
+			 <p:growl id="msgs" showDetail="true" />
 
-			 <p:growl id="messages" showDetail="true" />
-    
-			<p:dataTable id="tbl" var="usu" value="#{usuarioBean.usuarios}" paginator="true" rows="10" >
-
+			<p:dataTable id="tblUsuario" var="usu"
+				value="#{usuarioBean.usuarios}" paginator="true" rows="10"
+				selection="#{usuarioBean.selectedUsuario}" rowKey="#{usu.num}"
+				style="margin-bottom:0;margin-bottom:20px">
+				<p:column selectionMode="single"
+					style="width:16px;text-align:center" />
 				<p:column headerText="Num">
 					<h:outputText value="#{usu.num}" />
 				</p:column>
-				
 				<p:column headerText="Nombre">
 					<h:outputText value="#{usu.nombre}" />
 				</p:column>
-
 				<p:column headerText="Login">
 					<h:outputText value="#{usu.login}" />
 				</p:column>
-
-		        <p:column headerText="Area">
-		            <h:outputText value="#{usu.area}" />
-		        </p:column>
-
+				<p:column headerText="Area">
+					<h:outputText value="#{usu.area}" />
+				</p:column>
 				<p:column headerText="Usuario Alterno">
 					<h:outputText value="#{usu.usuarioAlterno}" />
 				</p:column>
-
 				<p:column>
-					<p:commandButton oncomplete="PF('carDialog').show()" update=":resultado:panelactu"
-					      title="Editar" image="icon-edit">
-						<f:setPropertyActionListener value="#{usu}"
-							target="#{usuarioBean.selectedUsuario}" />
+					<p:commandButton image="icon-edit"
+						oncomplete="PF('usuarioDialog').show()"
+						update=":resultado:panelactualizar" title="Editar"
+						process="tblUsuario" />
+
+					<p:commandButton title="Eliminar" image="icon-delete"
+						actionListener="#{usuarioBean.delete}" process="tblUsuario"
+						update=":resultado:msgs">
+						<p:confirm header="Confirmacion"
+							message="Estas seguro en eliminar el registro?"
+							icon="ui-icon-alert" />
 					</p:commandButton>
-					
-					<p:commandButton  title="Eliminar" image="icon-delete" >
-						<f:param name="num" value="#{usu.num}" />
-					</p:commandButton>
-               </p:column>
 
-
-
-
+				</p:column>
 			</p:dataTable>
 
-			<p:dialog header="Actualizar" widgetVar="carDialog" modal="true"
-				showEffect="fade" hideEffect="fade" resizable="false">
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 
-				<h:panelGrid id="panelactu" columns="2" cellpadding="5">
+
+			<p:dialog header="Actualizar" widgetVar="usuarioDialog" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<h:panelGrid id="panelactualizar" columns="2" cellpadding="5">
 					<h:column>
 						<p:outputLabel value="Num: " />
 					</h:column>
 					<h:column>
-						<p:inputText id="num" value="#{usuarioBean.selectedUsuario.num}"
-							required="true" label="num" />
+						<p:inputText id="num" value="#{usuarioBean.selectedUsuario.num}" />
 					</h:column>
 					<h:column>
 						<p:outputLabel value="Nombre: " />
 					</h:column>
 					<h:column>
-						<p:inputText id="nombre"
-							value="#{usuarioBean.selectedUsuario.nombre}" required="true"
-							label="nombre" />
+						<p:inputText id="nombre" value="#{usuarioBean.selectedUsuario.nombre}" />
 					</h:column>
 					<h:column>
 						<p:outputLabel value="Login: " />
 					</h:column>
 					<h:column>
-						<p:inputText id="login"
-							value="#{usuarioBean.selectedUsuario.login}" required="true"
-							label="login" />
+						<p:inputText id="login" value="#{usuarioBean.selectedUsuario.login}" />
 					</h:column>
 					<h:column>
 						<p:outputLabel value="Area: " />
 					</h:column>
 					<h:column>
-						<p:inputText id="area" value="#{usuarioBean.selectedUsuario.area}"
-							required="true" label="area" />
+						<p:inputText id="area" value="#{usuarioBean.selectedUsuario.area}" />
 					</h:column>
 					<h:column>
 						<p:outputLabel value="Usuario Alterno: " />
 					</h:column>
 					<h:column>
-						<p:inputText id="usuarioalterno"
-							value="#{usuarioBean.selectedUsuario.usuarioAlterno}"
-							required="true" label="usuarioalterno" />
+						<p:inputText id="usuarioAlterno" value="#{usuarioBean.selectedUsuario.usuarioAlterno}" />
 					</h:column>
-					<p:commandButton value="Actualizar" title="Actualizar" />
+					<p:commandButton value="Actualizar" title="Actualizar"
+						actionListener="#{usuarioBean.update}" update=":resultado:msgs" />
 
 
 				</h:panelGrid>

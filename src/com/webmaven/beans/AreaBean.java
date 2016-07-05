@@ -1,7 +1,10 @@
 package com.webmaven.beans;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -22,12 +25,32 @@ public class AreaBean implements Serializable {
 	private String nombreJefe;
 	private String areaSuperior;	
 	
-	public void save() {
-	    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Bienvenido " + nombre ));
-	    this.resetFail();
-	}
+	private Map<String,String> nombreJefes;
+	private Map<String,String> areaSuperiores;
 	
-	 public void update() {
+    @PostConstruct
+    public void init() {
+        
+	 nombreJefes  = new HashMap<String, String>();
+	 nombreJefes.put("Jose Bello", "1");
+	 nombreJefes.put("rodo Bolson", "9");
+	 nombreJefes.put("Rene Iguita", "13");
+	 nombreJefes.put("Jorge Middleton", "6");
+
+	 areaSuperiores  = new HashMap<String, String>();
+	 areaSuperiores.put("Economia", "1");
+	 areaSuperiores.put("Subastas", "2");
+	 areaSuperiores.put("Aseo", "3");
+	 areaSuperiores.put("Reclamos", "4");
+	 
+    }
+	    
+		public void save() {
+		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Bienvenido " + nombre ));
+		    this.resetFail();
+		}
+	
+	    public void update() {
 	        addMessage("Success", "Data updated");
 	    }
 	     
@@ -73,6 +96,22 @@ public class AreaBean implements Serializable {
 
 		public void setAreaSuperior(String areaSuperior) {
 			this.areaSuperior = areaSuperior;
+		}
+
+		public Map<String, String> getNombreJefes() {
+			return nombreJefes;
+		}
+
+		public void setNombreJefes(Map<String, String> nombreJefes) {
+			this.nombreJefes = nombreJefes;
+		}
+
+		public Map<String, String> getAreaSuperiores() {
+			return areaSuperiores;
+		}
+
+		public void setAreaSuperiores(Map<String, String> areaSuperiores) {
+			this.areaSuperiores = areaSuperiores;
 		}
 	    
 }

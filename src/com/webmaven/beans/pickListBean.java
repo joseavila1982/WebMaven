@@ -9,9 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.TransferEvent;
-import org.primefaces.event.UnselectEvent;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DualListModel;
 import javax.faces.application.FacesMessage;
 
@@ -24,6 +22,8 @@ public class pickListBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private String nombre;
+	private String login;
     private DualListModel<String> perfiles;
      
     @PostConstruct
@@ -31,8 +31,6 @@ public class pickListBean implements Serializable {
     	//Perfiles
     	List<String> perfilesSource = new ArrayList<String>();
     	List<String> perfilesTarget = new ArrayList<String>();
-        //List<String> citiesSource = new ArrayList<String>();
-       // List<String> citiesTarget = new ArrayList<String>();
          
         perfilesSource.add("Administrador");
         perfilesSource.add("Usuario interno");
@@ -46,6 +44,27 @@ public class pickListBean implements Serializable {
          
     }
 
+	public void save() {
+		if(perfiles.getTarget().size() > 0){
+	        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Perfiles Asignados: " + perfiles.getTarget() ));
+	        this.resetFail();
+	        
+		}else{
+		    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia! Debe seleccionar un valor en el campo Perfiles Asignados", ""));
+	
+		}
+		
+	}
+	
+	public void reset() {
+		RequestContext.getCurrentInstance().reset("formPerfiles:panel");
+	}
+    public void resetFail() {
+        this.nombre = null;
+        this.login = null;
+        this.reset();
+        
+    }
     
     public DualListModel<String> getPerfiles() {
 		return perfiles;
@@ -56,18 +75,24 @@ public class pickListBean implements Serializable {
 		this.perfiles = perfiles;
 	}	
  
-    public void onSelect(SelectEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Selected", event.getObject().toString()));
-    }
-     
-    public void onUnselect(UnselectEvent event) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Item Unselected", event.getObject().toString()));
-    }
-     
-    public void onReorder() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "List Reordered", null));
-    } 
+
+	public String getNombre() {
+		return nombre;
+	}
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public String getLogin() {
+		return login;
+	}
+
+
+	public void setLogin(String login) {
+		this.login = login;
+	} 
+    
 }

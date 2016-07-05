@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 
 import javax.faces.application.FacesMessage;
@@ -38,7 +37,7 @@ public class FileUploadBean implements Serializable {
 
 
 	public void fileUpload(FileUploadEvent event) {
-        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesMessage message = new FacesMessage("El archivo", event.getFile().getFileName() + " se cargo exitosamente.");
         FacesContext.getCurrentInstance().addMessage(null, message);
         archivo = event.getFile();
         try {
@@ -65,7 +64,6 @@ public class FileUploadBean implements Serializable {
              in.close();
              out.flush();
              out.close();
-             System.out.println("Nuevo archivo creado!");
              } catch (IOException e) {
              System.out.println(e.getMessage());
              }

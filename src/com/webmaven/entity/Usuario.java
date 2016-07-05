@@ -1,8 +1,5 @@
 package com.webmaven.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Usuario {
 
 	private int num;

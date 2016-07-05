@@ -13,6 +13,8 @@ import javax.faces.context.FacesContext;
 import com.webmaven.entity.Usuario;
 
 import org.primefaces.context.RequestContext;
+import java.util.HashMap;
+import java.util.Map;
 
 @ManagedBean(name = "usuarioBean")
 @ViewScoped
@@ -32,10 +34,29 @@ public class UsuarioBean implements Serializable {
 	private List<Usuario> usuarios;
     private Usuario selectedUsuario;
     private List<Usuario> selectedUsuarios;
+    
+
+    private Map<String,String> areas;
+    private Map<String,String> usuariosAlternos;
 	
 	 @PostConstruct
 	    public void init() {
 	        usuarios = createUsuarios(100);
+	        
+	        areas  = new HashMap<String, String>();
+	        areas.put("Finanzas", "Finanzas");
+	        areas.put("Area 51", "Area 51");
+	        areas.put("Economia", "Economia");
+	        areas.put("Aduana", "Aduana");
+	        areas.put("Informatica", "Informatica");
+	        areas.put("Servicios", "Servicios");
+	        
+	        usuariosAlternos  = new HashMap<String, String>();
+	        usuariosAlternos.put("Jose Bello", "1");
+	        usuariosAlternos.put("rodo Bolson", "9");
+	        usuariosAlternos.put("Rene Iguita", "13");
+	        usuariosAlternos.put("Jorge Middleton", "6");
+
 	    }
 	    
 	    
@@ -76,12 +97,15 @@ public class UsuarioBean implements Serializable {
 	}
      
     public void update() {
-        addMessage("Success", "Data updated");
+      	RequestContext context = RequestContext.getCurrentInstance();
+      	context.execute("PF('usuarioDialog').hide();");
+      	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registro actualizado con exito " + selectedUsuario.getNum() ));
     }
      
     public void delete() {
-        addMessage("Success", "Data deleted");
+    	 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Registro eliminado " + selectedUsuario.getNum() ));
     }
+
      
     public void addMessage(String summary, String detail) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
@@ -100,6 +124,7 @@ public class UsuarioBean implements Serializable {
         
     }
 
+    
 	public String getNombre() {
 		return nombre;
 	}
@@ -164,6 +189,28 @@ public class UsuarioBean implements Serializable {
 	public void setSelectedUsuarios(List<Usuario> selectedUsuarios) {
 		this.selectedUsuarios = selectedUsuarios;
 	}
+
+	public Map<String, String> getAreas() {
+		return areas;
+	}
+
+
+	public void setAreas(Map<String, String> areas) {
+		this.areas = areas;
+	}
+
+
+	public Map<String, String> getUsuariosAlternos() {
+		return usuariosAlternos;
+	}
+
+
+	public void setUsuariosAlternos(Map<String, String> usuariosAlternos) {
+		this.usuariosAlternos = usuariosAlternos;
+	}
+
+
+	
 
 
     

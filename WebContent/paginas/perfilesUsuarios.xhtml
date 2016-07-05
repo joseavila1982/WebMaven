@@ -11,6 +11,17 @@
 </h:head>
 <h:body>
 
+	<div id="loading">
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+
+		<p:dialog widgetVar="statusDialog" modal="true"
+			header="Espera por favor..." draggable="false" closable="false"
+			resizable="false">
+			<p:graphicImage value="/imagen/ajax-loader.gif" />
+		</p:dialog>
+	</div>
+	
 	<h:form>
 		<p:growl id="messages" />
 		<p:menubar>
@@ -29,16 +40,15 @@
 	</h:form>
 
 <p:fieldset legend="Mantenimiento Perfiles-Usuarios" style="margin-bottom:20px">
- <p:growl id="msgs" showDetail="true" />
 		
-  <h:form id="form1">
-	 <h:panelGrid id="panel" header="Form" columns="3" cellpadding="5">
+  <h:form id="formPerfiles">
+	 <h:panelGrid id="panel" columns="3" cellpadding="5">
 
 		<h:column>
 			<p:outputLabel value="Nombre: " />
 		</h:column>
 		<h:column>
-			<p:inputText id="nombre" value="" />
+			<p:inputText id="nombre" value="#{pickListBean.nombre}" required="true" requiredMessage="Debe introducir un valor en el campo Nombre" />
 		</h:column>
 		<h:column></h:column>
 
@@ -46,7 +56,7 @@
 			<p:outputLabel value="Login: " />
 		</h:column>
 		<h:column>
-			<p:inputText id="login" value="" /> 
+			<p:inputText id="login" value="#{pickListBean.login}" required="true" requiredMessage="Debe introducir un valor en el campo Login" /> 
 		</h:column>
 		<h:column></h:column>
 	   
@@ -54,19 +64,14 @@
 		<h:column></h:column>
 		<h:column>
 
-			<p:pickList id="pickList" value="#{pickListBean.perfiles}"
-				var="perfiles" itemLabel="#{perfiles}" itemValue="#{perfiles}">
-
-				<f:facet name="sourceCaption">Perfiles Disponibles</f:facet>
-				<f:facet name="targetCaption">Perfiles Asignados</f:facet>
+		<p:pickList id="pickList" value="#{pickListBean.perfiles}"
+			var="perfiles" itemLabel="#{perfiles}" itemValue="#{perfiles}">
+			
+			<f:facet name="sourceCaption">Perfiles Disponibles</f:facet>
+			<f:facet name="targetCaption">Perfiles Asignados</f:facet>
 
 			</p:pickList>
-
-			<p:commandButton id="Submit" value="Guardar"
-				update="displayPerfiles" oncomplete="PF('perfilDialog').show()"
-				style="margin-top:5px" />
-
-
+						
 			<p:dialog modal="true" showEffect="fade" hideEffect="fade"
 				widgetVar="perfilDialog">
 				<h:panelGrid id="displayPerfiles" columns="2">
@@ -77,21 +82,34 @@
 
 					<h:outputText value="Target: " style="font-weight:bold" />
 					<ui:repeat value="#{pickListBean.perfiles.target}" var="item">
-						<h:outputText value="#{item}" style="margin-right:5px" />
+						<h:outputText value="#{item}" style="margin-right:5px" 
+						required="true" requiredMessage="Debe introducir un valor en el campo Perfiles Asignados" />
 					</ui:repeat>
 				</h:panelGrid>
-			</p:dialog>
-		</h:column>
+			</p:dialog>			
+    
+	        </h:column>
 
+			
+			<h:column>
+				<p:commandButton value="Guardar" update="panel"
+					actionListener="#{pickListBean.save}" icon="ui-icon-check" />
+			</h:column>
+			<h:column>
+				<p:commandButton value="Limpiar" update="panel" process="@this"
+					actionListener="#{pickListBean.resetFail}" style="margin-right:20px;" />
+			</h:column>
+			<h:column></h:column>
 
+		    <h:column></h:column>
+			<h:column></h:column>
+			<h:column><p:messages id="msgs" /></h:column>
 
+  
 
+	</h:panelGrid>	
 
-			</h:panelGrid>	
   </h:form>
- 
-
-
 </p:fieldset>
 
 </h:body>

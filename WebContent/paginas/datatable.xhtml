@@ -39,7 +39,7 @@
  
     <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
         <p:outputPanel id="carDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" rendered="#{not empty dtTableBean.selectedCar}" columnClasses="label,value">
+            <p:panelGrid  columns="2" rendered="#{dtTableBean.selectedCar}" columnClasses="label,value">
                 <f:facet name="header">
                     <p:graphicImage name="demo/images/car/#{dtTableBean.selectedCar.marca}-big.gif"/> 
                 </f:facet>

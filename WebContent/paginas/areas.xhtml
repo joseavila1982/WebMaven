@@ -45,13 +45,13 @@
 					<p:outputLabel value="Nombre Jefe: " />
 				</h:column>
 				<h:column>
-					<p:selectOneMenu id="namjefe" value="#{areaBean.nombreJefe}" required="true" requiredMessage="Debe seleccionar un valor en el campo Nombre Jefe"
-					                 style="width:125px">
-						<f:selectItem itemLabel="Seleccione un item ..." itemValue="" />
-						<f:selectItem itemLabel="Jose Bello" itemValue="2" />
-						<f:selectItem itemLabel="rodo Bolson" itemValue="9" />
-						<f:selectItem itemLabel="Rene Iguita" itemValue="13" />
-						<f:selectItem itemLabel="Jorge Middleton" itemValue="6" />
+					<p:selectOneMenu id="nombreJefe" value="#{areaBean.nombreJefe}"
+						required="true"
+						requiredMessage="Debe seleccionar un valor en el campo Nombre Jefe"
+						style="width:125px">
+						<f:selectItem itemLabel="Seleccione un item ..." itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{areaBean.nombreJefes}" />
 					</p:selectOneMenu>
 				</h:column>
 				<h:column></h:column>
@@ -60,13 +60,13 @@
 					<p:outputLabel value="Area Superior: " />
 				</h:column>
 				<h:column>
-					<p:selectOneMenu id="areaSup" value="#{areaBean.areaSuperior}" required="true" requiredMessage="Debe seleccionar un valor en el campo Area Superior" 
-					                 style="width:140px">
-						<f:selectItem itemLabel="Seleccionar" itemValue="" />
-						<f:selectItem itemLabel="Economia" itemValue="2" />
-						<f:selectItem itemLabel="Subastas" itemValue="9" />
-						<f:selectItem itemLabel="Aseo" itemValue="13" />
-						<f:selectItem itemLabel="Reclamos" itemValue="6" />
+					<p:selectOneMenu id="areaSup" value="#{areaBean.areaSuperior}"
+						required="true"
+						requiredMessage="Debe seleccionar un valor en el campo Area Superior"
+						style="width:125px">
+						<f:selectItem itemLabel="Seleccione un item ..." itemValue=""
+							noSelectionOption="true" />
+						<f:selectItems value="#{areaBean.areaSuperiores}" />
 					</p:selectOneMenu>
 				</h:column>
 				<h:column>
