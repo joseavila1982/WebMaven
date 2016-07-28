@@ -39,7 +39,7 @@ public class UsuarioBean implements Serializable {
     private Map<String,String> areas;
     private Map<String,String> usuariosAlternos;
 	
-	 @PostConstruct
+	    @PostConstruct
 	    public void init() {
 	        usuarios = createUsuarios(100);
 	        
